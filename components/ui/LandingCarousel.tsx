@@ -8,10 +8,10 @@ const LandingCarousel: React.FC = () => {
   const Banners = [
     "/assets/L1.jpg",
     "/assets/L2.jpg",
-    "/assets/L3.jpeg",
-    "/assets/L4.jpeg",
-    "/assets/L5.jpeg",
-    "/assets/rebirth.jpeg",
+    "/assets/L3.jpg",
+    "/assets/L4.jpg",
+    "/assets/L5.jpg",
+    "/assets/L6.jpg",
   ];
 
   const settings = {
