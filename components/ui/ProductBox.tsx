@@ -12,7 +12,10 @@ const ProductBox: React.FC = () => {
         height={500}
         className="image"
       />
-      <h2>Palm Paradise</h2>
+      <p>
+        Palm Paradise <br />
+        <small>70000</small>
+      </p>
     </Style>
   );
 };
@@ -28,10 +31,15 @@ const Style = styled.div`
   text-align: center;
   /* box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06); */
   .image {
-    width: 100%;
+    width: 250px;
     height: auto;
   }
-  /* h2 {
+  p {
     font-family: "Open Sans";
-  } */
+    font-weight: 600;
+    transform: translateY(-20px);
+    small {
+      font-weight: normal;
+    }
+  }
 `;

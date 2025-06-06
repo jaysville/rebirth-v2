@@ -54,7 +54,7 @@ const Style = styled.div`
 
   div {
     position: absolute;
-    bottom: 50px;
+    bottom: 100px;
     left: 20px;
 
     display: flex;

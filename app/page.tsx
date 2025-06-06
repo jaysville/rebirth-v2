@@ -13,14 +13,14 @@ const HomePage: React.FC = () => {
   return (
     <Style>
       <Landing />
-      <Grid container spacing={4} sx={{ padding: "20px" }}>
+      <Grid container spacing={4} sx={{ padding: "5px" }}>
         <Grid size={{ xs: 12, md: 5 }} order={{ xs: 2, md: 2 }}>
           <LandingCarousel />
         </Grid>
         <Grid
           size={{ xs: 12, md: 7 }}
           order={{ xs: 1, md: 1 }}
-          sx={{ padding: "20px" }}
+          sx={{ padding: "10px" }}
           className="landing-text"
         >
           {/* <Item className="text-container"> */}
@@ -72,6 +72,7 @@ const Style = styled.div`
   }
   .h1 {
     text-align: start;
+    font-size: 23px;
     color: #5d90be;
   }
 `;
