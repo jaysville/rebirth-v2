@@ -6,12 +6,13 @@ import Image from "next/image";
 
 const LandingCarousel: React.FC = () => {
   const Banners = [
-    "/assets/L1.jpg",
-    "/assets/L2.jpg",
+    "/assets/L1.webp",
+    "/assets/L2.webp",
     "/assets/L3.jpg",
     "/assets/L4.jpg",
     "/assets/L5.jpg",
     "/assets/L6.jpg",
+    "/assets/L7.jpg",
   ];
 
   const settings = {

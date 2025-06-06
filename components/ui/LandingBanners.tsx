@@ -7,6 +7,7 @@ import { MainBtn, ShopNowBtn } from "../ui/Buttons";
 import { useSelector } from "react-redux";
 import VideoBox from "./VideoBox";
 import Image from "next/image";
+import { ArrowRightOutlined } from "@ant-design/icons";
 
 const Landing = () => {
   //   const isAdmin = useSelector((state) => state.app.isAdmin);
@@ -14,7 +15,15 @@ const Landing = () => {
   return (
     <Style>
       <div>
-        <a href="#shop"></a>
+        <button>
+          Shop Men <ArrowRightOutlined />
+        </button>
+        <button>
+          Shop Women <ArrowRightOutlined />
+        </button>
+        <button>
+          Shop Accessories <ArrowRightOutlined />
+        </button>
       </div>
     </Style>
   );
@@ -45,23 +54,27 @@ const Style = styled.div`
 
   div {
     position: absolute;
-    top: 240px;
-    left: -60px;
+    bottom: 50px;
+    left: 20px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    img {
-      transform: scale(0.6);
-    }
-    @media (max-width: 980px) {
-      transform: scale(0.9);
-
-      left: -100px;
-    }
-    @media (max-width: 500px) {
-      transform: scale(0.6);
-      top: 350px;
-      left: -130px;
+    button {
+      border: 2px solid aliceblue;
+      text-align: center;
+      background-color: #0000004a;
+      width: 160px;
+      color: aliceblue;
+      font-size: 800;
+      height: 40px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 2ms ease-in-out;
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 `;
