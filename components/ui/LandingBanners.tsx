@@ -24,8 +24,9 @@ const Style = styled.div`
   height: 700px;
   margin-bottom: 30px;
 
-  background-image: url("/assets/L4.jpeg");
+  background-image: url("/assets/L4.jpg");
   background-size: cover;
+
   filter: sepia(0.15) contrast(1.05) brightness(0.98) saturate(1.2)
     hue-rotate(-2deg);
   transition: filter 0.3s ease;
