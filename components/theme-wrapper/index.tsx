@@ -6,11 +6,11 @@ import { lightMode, darkMode } from "@/utils/colors";
 import { useSelector } from "react-redux";
 
 const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }) => {
-  const theme = useSelector((state: RootState) => state.app.theme);
-  const themeObject = theme === "lightMode" ? lightMode : darkMode;
+  // const theme = useSelector((state: RootState) => state.app.theme);
+  // const themeObject = theme === "lightMode" ? lightMode : darkMode;
 
   return (
-    <ThemeProvider theme={themeObject}>
+    <ThemeProvider theme={lightMode}>
       <GlobalStyle />
       {children}
     </ThemeProvider>
