@@ -3,6 +3,7 @@
 import { MainBtn, Tag } from "@/components/ui/Buttons";
 import Landing from "@/components/ui/LandingBanners";
 import LandingCarousel from "@/components/ui/LandingCarousel";
+import ProductsCarousel from "@/components/ui/ProductsCarousel";
 import Landingmerch from "@/components/ui/TrendingMerch";
 
 import { Grid } from "@mui/material";
@@ -12,23 +13,28 @@ const HomePage: React.FC = () => {
   return (
     <Style>
       <Landing />
-      <Grid container spacing={4}>
-        <Grid size={{ xs: 12, md: 5 }}>
+      <Grid container spacing={4} sx={{ padding: "20px" }}>
+        <Grid size={{ xs: 12, md: 5 }} order={{ xs: 2, md: 2 }}>
           <LandingCarousel />
         </Grid>
-        <Grid size={{ xs: 12, md: 7 }}>
-          <Item className="text-container">
-            <Tag>Welcome To</Tag>
-            <h1>The Rebirth Island</h1>
-            <p>
-              At Rebirth Island, we design clean, high-quality apparel that
-              empowers confidence and self-expression. Born from the idea of
-              starting fresh and showing up stronger, our pieces reflect growth,
-              resilience, and bold simplicity. This isn’t just clothing — it’s a
-              symbol of your evolution.
-            </p>
-            <MainBtn>Learn More</MainBtn>
-          </Item>
+        <Grid
+          size={{ xs: 12, md: 7 }}
+          order={{ xs: 1, md: 1 }}
+          sx={{ padding: "20px" }}
+          className="landing-text"
+        >
+          {/* <Item className="text-container"> */}
+          <Tag>Welcome To</Tag>
+          <h1 className="h1">The Rebirth Island 🌴</h1>
+          <p>
+            At Rebirth Island, we design clean, high-quality apparel that
+            empowers confidence and self-expression. Born from the idea of
+            starting fresh and showing up stronger, our pieces reflect growth,
+            resilience, and bold simplicity. This isn’t just clothing — it’s a
+            symbol of your evolution.
+          </p>
+          <MainBtn>Learn More</MainBtn>
+          {/* </Item> */}
         </Grid>
       </Grid>
       <br />
@@ -36,6 +42,7 @@ const HomePage: React.FC = () => {
       <h2>Trending</h2>
       <Landingmerch />
       <h2>Best Sellers</h2>
+      <ProductsCarousel />
     </Style>
   );
 };
@@ -51,6 +58,11 @@ const Style = styled.div`
   h3 {
     text-align: center;
   }
+  .landing-text {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06);
+    height: fit-content;
+    border-radius: 10px;
+  }
   button {
     align-self: center;
     margin-top: 20px;
@@ -58,20 +70,23 @@ const Style = styled.div`
   #shop {
     margin-top: 50px;
   }
+  .h1 {
+    text-align: start;
+    color: #5d90be;
+  }
 `;
 const Item = styled.div`
   margin-top: 20px;
   padding: 30px;
   h1 {
     font-weight: bold;
+
     margin: 0;
   }
   h2 {
     text-align: center;
   }
-  .h1 {
-    text-align: start;
-  }
+
   .image {
     width: 384px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06);
@@ -84,7 +99,7 @@ const Item = styled.div`
     text-align: start;
     flex-direction: column;
     justify-content: center;
-    padding: 10px;
+    /* padding: 10px; */
 
     p {
       margin: 10px 0;
@@ -119,11 +134,11 @@ const Loader = styled.div`
 //   }
 // `;
 
-const ProductsContainer = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  @media (max-width: 650px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-`;
+// const ProductsContainer = styled.ul`
+//   display: grid;
+//   grid-template-columns: repeat(3, 1fr);
+//   gap: 30px;
+//   @media (max-width: 650px) {
+//     grid-template-columns: repeat(2, 1fr);
+//   }
+// `;

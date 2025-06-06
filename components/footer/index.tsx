@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Footer: React.FC = () => {
   return (
     <Style>
-      <h5>Explore</h5>
+      <h3>Explore</h3>
       <ul>
         {Links.map(({ title, link }, i) => {
           return (
@@ -29,12 +29,19 @@ const Style = styled.footer`
   margin-top: 30px;
   color: aliceblue;
   padding: 10px 20px;
+
   ul {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
   }
+  h3 {
+    color: pink;
+    font-weight: 500;
+    margin: 10px 0;
+  }
   li {
-    padding: 3px;
+    padding: 5px;
+    font-size: 13px;
   }
   div {
     display: flex;
@@ -51,15 +58,15 @@ const Links = [
   },
   {
     title: "Terms of use and conduct",
-    link: "terms-of-use-and-conduct",
+    link: "/terms-of-use-and-conduct",
   },
   {
     title: "Return and Refund policy",
-    link: "/refund-policy",
+    link: "/return-and-refund",
   },
 
   {
     title: "Get in Touch",
-    link: "/contact",
+    link: "/get-in-touch",
   },
 ];

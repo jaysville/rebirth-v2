@@ -1,6 +1,4 @@
 "use client";
-
-import type { AppProps } from "next/app";
 import GlobalStyle from "../ui/GlobalStyleWrapper";
 import { ThemeProvider } from "styled-components";
 import { RootState } from "@/redux/store";

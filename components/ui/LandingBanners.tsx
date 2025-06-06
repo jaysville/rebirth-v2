@@ -14,9 +14,7 @@ const Landing = () => {
   return (
     <Style>
       <div>
-        <a href="#shop">
-          <ShopNowBtn type="button">SHOP NOW</ShopNowBtn>
-        </a>
+        <a href="#shop"></a>
       </div>
     </Style>
   );
@@ -28,8 +26,22 @@ const Style = styled.div`
 
   background-image: url("/assets/L4.jpeg");
   background-size: cover;
+  filter: sepia(0.15) contrast(1.05) brightness(0.98) saturate(1.2)
+    hue-rotate(-2deg);
+  transition: filter 0.3s ease;
   background-position: center;
   position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("/assets/grain.png"); /* transparent PNG grain texture */
+    background-size: cover;
+    mix-blend-mode: soft-light;
+    opacity: 0.08; /* adjust for more/less grain */
+    pointer-events: none;
+  }
+
   div {
     position: absolute;
     top: 240px;

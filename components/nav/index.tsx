@@ -1,19 +1,49 @@
 "use client";
 import styled from "styled-components";
 import PermIdentityIcon from "@mui/icons-material/PermIdentityOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import Icon, {
+  MenuOutlined,
+  ShoppingOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Dropdown, Space } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { Badge } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Logout } from "@mui/icons-material";
+import { Logout, ShoppingBag } from "@mui/icons-material";
+import Link from "next/link";
+import SideNav from "./Sidenav";
 
 const NavBar: React.FC = () => {
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [mobileView, setMobileView] = useState(false);
+  const [openSideNav, setOpenSideNav] = useState(false);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+
+    if (windowWidth <= 650) {
+      setMobileView(true);
+    } else {
+      setMobileView(false);
+    }
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [windowWidth]);
+
+  const toggleSideNav = (newState: boolean) => {
+    setOpenSideNav(newState);
+  };
   return (
-    <Style>
-      {/* {mobileview && !onCheckoutPage && <Hamburger onClick={opensidenav} />}
+    <>
+      <Style>
+        {/* {mobileview && !onCheckoutPage && <Hamburger onClick={opensidenav} />}
       <a href="/">
         <Logo
           src={`${process.env.PUBLIC_URL}/images/Logo.png`}
@@ -90,26 +120,72 @@ const NavBar: React.FC = () => {
           );
         })}
       </OtherLists> */}
-      NAVBARRRRR
-    </Style>
+        {mobileView && (
+          <MenuOutlined
+            onClick={() => {
+              toggleSideNav(true);
+            }}
+          />
+        )}
+        <a href="/">
+          <h1>Rebirth Island</h1>
+        </a>
+
+        {!mobileView && (
+          <CollectionsList>
+            {collectionLinks.map(({ title, href }, i) => {
+              return (
+                <li key={i}>
+                  <Link href={href}>{title}</Link>
+                </li>
+              );
+            })}
+          </CollectionsList>
+        )}
+        <div className="icons">
+          <ShoppingOutlined />
+          <UserOutlined />
+        </div>
+      </Style>
+      <SideNav
+        opensidenav={openSideNav && mobileView}
+        closesidenav={() => {
+          toggleSideNav(false);
+        }}
+      />
+    </>
   );
 };
 export default NavBar;
 
 const Style = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  font-size: 15px;
-  background-color: white;
-  position: fixed;
-  z-index: 1000;
+  height: 80px;
   width: 100%;
+  padding: 30px 20px;
+  background-color: #fffffffa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
   top: 0;
+  z-index: 999;
+  backdrop-filter: blur(8px);
+  h1 {
+    font-weight: 600;
+    cursor: pointer;
+    color: #552c36;
+  }
   ul {
     display: flex;
   }
   li {
     margin: 15px;
+    cursor: pointer;
+  }
+  svg {
+    transform: scale(1.3);
+    margin: 0 5px;
     cursor: pointer;
   }
 `;
@@ -128,7 +204,6 @@ const AdminContainer = styled.div`
 `;
 const CollectionsList = styled.ul`
   font-weight: 500;
-  transform: translateY(9px) translateX(50px);
   svg {
     transform: scale(0.6) translateX(-18px) translateY(3px);
   }

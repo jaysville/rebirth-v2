@@ -7,6 +7,7 @@ import ProviderWrapper from "@/components/provider-wrapper";
 import Footer from "@/components/footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Pacifico, Open_Sans } from "next/font/google";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +17,19 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const pacifico = Pacifico({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pacifico",
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-open-sans",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -33,11 +47,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} ${openSans.variable}`}
+      >
         <ProviderWrapper>
           <ThemeProviderWrapper>
             <NavBar />
-            <div style={{ marginTop: "100px", position: "relative" }}>
+            <div style={{ marginTop: "80px", position: "relative" }}>
               {children}
             </div>
             <Footer />

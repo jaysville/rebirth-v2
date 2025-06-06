@@ -7,9 +7,10 @@ export const MainBtn = styled.button`
   width: 110px;
   border-radius: 2px;
   height: 40px;
-  background-color: #a55fa5;
+  background-color: #552c36;
   color: aliceblue;
   border: none;
+  cursor: pointer;
 `;
 
 export const ShopNowBtn = styled.button`
@@ -80,15 +81,15 @@ export const GoBack = () => {
 
 export const Tag = styled.span`
   background-color: white;
-  color: #ab6672;
+  color: #a65d69;
   border-radius: 20px;
   padding: 5px;
-  width: 100px;
+  width: 150px;
   display: grid;
   place-items: center;
   transform: scale(0.9);
 
-  font-size: 14px;
+  font-size: 16px;
   i {
     transform: translateX(-8px);
     font-style: normal;
