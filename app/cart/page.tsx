@@ -78,7 +78,7 @@ const CartPage: React.FC<Props> = ({ mobileview }) => {
   );
 };
 
-export const CartStyle = styled.div`
+const CartStyle = styled.div`
   padding: 30px;
   h3 {
     padding: 10px;
@@ -90,7 +90,7 @@ export const CartStyle = styled.div`
   }
 `;
 
-export const CheckoutSection = styled.div`
+const CheckoutSection = styled.div`
   transform: translateY(-10px);
 
   display: grid;
