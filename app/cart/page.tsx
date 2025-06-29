@@ -10,11 +10,9 @@ import { RootState } from "@/redux/store";
 import { MainBtn } from "@/components/ui/Buttons";
 import { useRouter } from "next/navigation";
 
-interface Props {
-  mobileview: boolean;
-}
+const mobileview = false;
 
-const CartPage: React.FC<Props> = ({ mobileview }) => {
+const CartPage: React.FC = () => {
   const cart = useSelector((state: RootState) => state.app.cart);
 
   const router = useRouter();
