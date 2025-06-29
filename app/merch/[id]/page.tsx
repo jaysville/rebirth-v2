@@ -2,13 +2,12 @@ import SingleMerchPage from "@/components/ui/SingleMerchContent";
 import { MerchProps } from "@/types/components";
 import serverUrl from "@/utils/server";
 import { notFound } from "next/navigation";
-
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
-
-const MerchDetails = async ({ params }: { params: { collection: string } }) => {
-  const res = await fetch(`${serverUrl}/merch/${params.id}`, {
+const MerchDetails: React.FC<Props> = async ({ params }) => {
+  const { id } = await params;
+  const res = await fetch(`${serverUrl}/merch/${id}`, {
     next: { revalidate: 60 },
     headers: {
       Origin: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
