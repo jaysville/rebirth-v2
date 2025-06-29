@@ -7,7 +7,7 @@ interface Props {
   params: { id: string };
 }
 
-const MerchDetails: React.FC<Props> = async ({ params }) => {
+const MerchDetails = async ({ params }: { params: { collection: string } }) => {
   const res = await fetch(`${serverUrl}/merch/${params.id}`, {
     next: { revalidate: 60 },
     headers: {
