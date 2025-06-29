@@ -13,11 +13,18 @@ import { useEffect, useState } from "react";
 import { Logout, ShoppingBag } from "@mui/icons-material";
 import Link from "next/link";
 import SideNav from "./Sidenav";
+import { RootState } from "@/redux/store";
+import { useRouter } from "next/navigation";
 
 const NavBar: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [mobileView, setMobileView] = useState(false);
   const [openSideNav, setOpenSideNav] = useState(false);
+
+  const router = useRouter();
+  const totalQuantity = useSelector(
+    (state: RootState) => state.app.totalQuantity
+  );
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -143,7 +150,24 @@ const NavBar: React.FC = () => {
           </CollectionsList>
         )}
         <div className="icons">
-          <ShoppingOutlined />
+          <Badge
+            // badgeContent={onCheckoutPage ? 0 : totalQuantity}
+            badgeContent={totalQuantity}
+            sx={{
+              "& .MuiBadge-badge": {
+                backgroundColor: "#552c36",
+                color: "aliceblue",
+                fontStyle: "normal",
+              },
+            }}
+          >
+            <ShoppingOutlined
+              onClick={() => {
+                router.push("/cart");
+              }}
+            />
+          </Badge>
+
           <UserOutlined />
         </div>
       </Style>
@@ -171,10 +195,15 @@ const Style = styled.nav`
   top: 0;
   z-index: 999;
   backdrop-filter: blur(8px);
+  .icons {
+    display: flex;
+    gap: 5px;
+  }
   h1 {
     font-weight: 600;
+    margin-top: 11px;
     cursor: pointer;
-    color: #552c36;
+    color: #2e2e2e;
   }
   ul {
     display: flex;

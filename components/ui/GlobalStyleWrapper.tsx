@@ -15,10 +15,12 @@ ul{
       list-style-type: none;
 }
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Pacifico", cursive;
-    font-weight: 600;
-    margin: 0;
-  }
+  font-family: "MonteCarlo", cursive;
+  font-weight: 400;
+  font-size: 40px;
+  font-style: normal;
+
+}
 `;
 
 export default GlobalStyle;

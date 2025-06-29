@@ -7,8 +7,10 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import { useSelector } from "react-redux";
 import { Logout, PermIdentity } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/redux/store";
 
 import { collectionLinks } from "./index";
+
 interface SideNavProps {
   opensidenav: boolean;
   closesidenav: () => void;
@@ -25,6 +27,11 @@ const SideNav: React.FC<SideNavProps> = ({
   //   const isAdmin = useSelector((state) => state.app.isAdmin);
 
   const router = useRouter();
+
+  const totalQuantity = useSelector(
+    (state: RootState) => state.app.totalQuantity
+  );
+
   return (
     <Drawer open={opensidenav} onClose={closesidenav}>
       <Container>
@@ -32,7 +39,11 @@ const SideNav: React.FC<SideNavProps> = ({
 
         <a href="/cart">
           <CartLink>
-            <span>Cart 4 Item(s)</span> <ShoppingCartOutlinedIcon />
+            <span>
+              Cart <b>{totalQuantity} Item(s)</b>
+            </span>
+
+            <ShoppingCartOutlinedIcon />
           </CartLink>
         </a>
 

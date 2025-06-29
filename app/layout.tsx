@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@ant-design/v5-patch-for-react-19";
+import "antd/dist/reset.css";
 import NavBar from "@/components/nav";
 import ThemeProviderWrapper from "@/components/theme-wrapper";
 import ProviderWrapper from "@/components/provider-wrapper";
@@ -48,10 +50,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
+        {/* <link
           href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans&display=swap"
           rel="stylesheet"
+        /> */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=MonteCarlo&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Rock+Salt&display=swap"
+          rel="stylesheet"
         />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} ${openSans.variable}`}

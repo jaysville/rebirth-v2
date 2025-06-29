@@ -15,7 +15,7 @@ const Landingmerch: React.FC = () => {
           <Grid
             container
             spacing={4}
-            key={merch.id}
+            key={merch._id}
             alignItems="center"
             className={`merch  ${isImageRight ? "pink " : "grey"}`}
           >
@@ -26,23 +26,29 @@ const Landingmerch: React.FC = () => {
             >
               <Tag>Popular</Tag>
               <h3>{merch.name}</h3>
-              <p>{merch.description}</p>
-              <Link href={`/merchs/${merch.id}`}>
+              <p className="description">{merch.description}</p>
+              <Link href={`/merch/${merch._id}`}>
                 <MainBtn>View</MainBtn>
               </Link>
             </Grid>
             <Grid
               size={{ xs: 12, md: 6 }}
               order={{ xs: 1, md: isImageRight ? 2 : 1 }}
+              sx={{
+                display: "flex",
+                justifyContent: isImageRight ? "flex-end" : "flex-start",
+              }}
             >
-              <Image
-                src={merch.thumbmail}
-                alt={merch.name}
-                className={`image ${isImageRight ? "start" : ""}`}
-                priority
-                width={500}
-                height={500}
-              />
+              <div className={`image-wrapper ${index === 0 ? "first" : ""}`}>
+                <Image
+                  src={merch.thumbmail || ""}
+                  alt={merch.name}
+                  className={`image ${isImageRight ? "start" : ""}`}
+                  priority
+                  width={500}
+                  height={500}
+                />
+              </div>
             </Grid>
           </Grid>
         );
@@ -60,11 +66,18 @@ const Container = styled.div`
   gap: 40px;
   padding: 30px;
   /* transform: scale(0.9); */
+
+  .description {
+    color: #2e2e2e;
+  }
+  button {
+    margin: 10px 0;
+  }
   h3 {
     justify-self: start;
     align-self: start;
 
-    color: #4768a0;
+    color: #2e2e2e;
     margin: 10px 0;
     font-weight: bold;
   }
@@ -87,11 +100,33 @@ const Container = styled.div`
   button {
     margin-bottom: 20px;
   }
-  .image {
+  .image-wrapper {
     width: 300px;
     height: auto;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.06);
+    display: grid;
+    background-color: white;
+    place-items: center;
+
+    @media (max-width: 900px) {
+      margin: auto;
+      width: 100%;
+    }
+
+    &.first {
+      img {
+        transform: scale(0.85);
+        transition: transform 0.3s ease;
+        border: transparent;
+      }
+    }
+  }
+  .image {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+
     display: grid;
     place-items: center;
     @media (max-width: 900px) {
@@ -99,7 +134,9 @@ const Container = styled.div`
       width: 100%;
     }
   }
+
   .start {
-    margin-left: auto;
+    display: flex;
+    justify-content: end;
   }
 `;

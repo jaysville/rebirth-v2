@@ -56,9 +56,10 @@ const Style = styled.div`
     }
   }
   h3 {
-    color: #a55fa5;
-    font-weight: 700;
-    font-family: "open sans";
+    color: #2e2e2e;
+    font-weight: 600;
+    font-size: 30px;
+
     margin: 10px 0;
   }
 `;

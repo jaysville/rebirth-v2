@@ -33,7 +33,7 @@ const AboutUs: React.FC = () => {
           className="img-container"
         >
           <Image
-            src="/assets/L3.jpeg"
+            src="/assets/L5.jpg"
             alt="poster"
             width={500}
             height={500}
@@ -100,9 +100,10 @@ const Style = styled.div`
     border-radius: 10px;
   }
   h3 {
-    color: #a55fa5;
-    font-weight: 700;
-    font-family: "open sans";
+    color: #2e2e2e;
+    font-weight: 600;
+    font-size: 30px;
+
     margin: 10px 0;
   }
   b {
