@@ -5,7 +5,6 @@ export interface CartItemProps extends MerchProps {
   size: string;
 }
 export interface AppState {
-  theme: "lightMode" | "darkMode";
   token: string;
   merch: MerchProps[];
   cart: CartItemProps[];

@@ -4,7 +4,7 @@ import "./globals.css";
 import "@ant-design/v5-patch-for-react-19";
 import "antd/dist/reset.css";
 import NavBar from "@/components/nav";
-import ThemeProviderWrapper from "@/components/theme-wrapper";
+
 import ProviderWrapper from "@/components/provider-wrapper";
 import Footer from "@/components/footer";
 import "slick-carousel/slick/slick.css";
@@ -50,10 +50,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* <link
+        <link
           href="https://fonts.googleapis.com/css2?family=Pacifico&family=Open+Sans&display=swap"
           rel="stylesheet"
-        /> */}
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=MonteCarlo&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Rock+Salt&display=swap"
           rel="stylesheet"
@@ -65,13 +65,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${pacifico.variable} ${openSans.variable}`}
       >
         <ProviderWrapper>
-          <ThemeProviderWrapper>
-            <NavBar />
-            <div style={{ marginTop: "80px", position: "relative" }}>
-              {children}
-            </div>
-            <Footer />
-          </ThemeProviderWrapper>
+          <NavBar />
+          <div style={{ marginTop: "80px", position: "relative" }}>
+            {children}
+          </div>
+          <Footer />
         </ProviderWrapper>
       </body>
     </html>

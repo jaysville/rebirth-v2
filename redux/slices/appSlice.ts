@@ -3,7 +3,6 @@ import { MerchProps } from "@/types/components";
 import { AppState } from "@/types/reduxStates";
 
 const initialState: AppState = {
-  theme: "darkMode",
   isAdmin: false,
   token: "",
   merch: [],
@@ -18,9 +17,6 @@ const appSlice = createSlice({
   reducers: {
     setMerch: (state, action: PayloadAction<MerchProps[]>) => {
       state.merch = action.payload;
-    },
-    toggleTheme(state) {
-      state.theme = state.theme === "lightMode" ? "darkMode" : "lightMode";
     },
     updateAdmin: (state, action: PayloadAction<boolean>) => {
       state.isAdmin = action.payload;
@@ -93,7 +89,6 @@ const appSlice = createSlice({
 });
 
 export const {
-  toggleTheme,
   setMerch,
   updateAdmin,
   addToCart,
