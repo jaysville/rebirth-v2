@@ -5,10 +5,11 @@ export interface CartItemProps extends MerchProps {
   size: string;
 }
 export interface AppState {
-  token: string;
+  token: string | null;
   merch: MerchProps[];
   cart: CartItemProps[];
   cartItemIds: string[];
   totalQuantity: number;
   isAdmin: boolean;
+  sessionExpiresAt: number | null;
 }

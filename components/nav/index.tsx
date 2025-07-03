@@ -168,7 +168,11 @@ const NavBar: React.FC = () => {
             />
           </Badge>
 
-          <UserOutlined />
+          <UserOutlined
+            onClick={() => {
+              router.push("/login");
+            }}
+          />
         </div>
       </Style>
       <SideNav

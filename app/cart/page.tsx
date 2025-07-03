@@ -10,8 +10,6 @@ import { RootState } from "@/redux/store";
 import { MainBtn } from "@/components/ui/Buttons";
 import { useRouter } from "next/navigation";
 
-const mobileview = false;
-
 const CartPage: React.FC = () => {
   const cart = useSelector((state: RootState) => state.app.cart);
 
@@ -27,7 +25,6 @@ const CartPage: React.FC = () => {
     <CartStyle>
       <h3>Cart</h3>
       <CheckoutSection>
-        {!mobileview && <div />}
         <div>
           <table>
             <tbody>
@@ -36,7 +33,7 @@ const CartPage: React.FC = () => {
                 <td>₦{totalPrice}</td>
               </tr>
               <tr>
-                <td>Shipping</td>
+                <td>Shipping </td>
                 <td>Calculated at checkout</td>
               </tr>
               <tr className="total">
@@ -47,13 +44,23 @@ const CartPage: React.FC = () => {
           </table>
 
           <div className="btn-container">
-            <MainBtn
-              onClick={() => {
-                router.push("/checkout");
-              }}
-            >
-              Checkout
-            </MainBtn>
+            {cart.length > 0 ? (
+              <MainBtn
+                onClick={() => {
+                  router.push("/checkout");
+                }}
+              >
+                Checkout
+              </MainBtn>
+            ) : (
+              <MainBtn
+                onClick={() => {
+                  router.push("/");
+                }}
+              >
+                Go shopping
+              </MainBtn>
+            )}
           </div>
         </div>
       </CheckoutSection>
@@ -63,7 +70,7 @@ const CartPage: React.FC = () => {
             {cart.map((item, i) => {
               return (
                 <li key={i}>
-                  <CartItem item={item} mobileview={mobileview} />
+                  <CartItem item={item} />
                 </li>
               );
             })}
@@ -90,15 +97,15 @@ const CartStyle = styled.div`
 
 const CheckoutSection = styled.div`
   transform: translateY(-10px);
-
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  justify-content: end;
 
   table {
     width: 100%;
 
     tr {
       display: flex;
+      width: 300px;
       justify-content: space-between;
       margin: 10px 0;
     }

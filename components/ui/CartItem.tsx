@@ -13,10 +13,9 @@ import { CartItemProps } from "@/types/reduxStates";
 
 interface Props {
   item: CartItemProps;
-  mobileview: boolean;
 }
 
-const CartItem: React.FC<Props> = ({ item, mobileview }) => {
+const CartItem: React.FC<Props> = ({ item }) => {
   const totalPrice = item.price * item.quantity;
 
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ const CartItem: React.FC<Props> = ({ item, mobileview }) => {
     dispatch(clearItem({ id: item._id, size: item.size }));
   };
   return (
-    <Style mobileview={mobileview}>
+    <Style>
       <Clear onClick={handleClearItem} />
       <ProductDetails>
         <img src={item.images[0]} alt="product" />
@@ -56,12 +55,12 @@ const CartItem: React.FC<Props> = ({ item, mobileview }) => {
 };
 
 export default CartItem;
-const Style = styled.div<{ mobileview: boolean }>`
+const Style = styled.div`
   position: relative;
   display: grid;
+
   padding-top: 30px;
-  grid-template-columns: ${(props) =>
-    props.mobileview ? "repeat(1,1fr)" : "repeat(2, 1fr)"};
+  /* grid-template-columns: repeat(1, 1fr) repeat(2, 1fr); */
   border-top: 1px solid rgba(0, 0, 0, 0.3);
 
   img {

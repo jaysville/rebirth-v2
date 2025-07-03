@@ -3,8 +3,10 @@ import { MerchProps } from "@/types/components";
 import { AppState } from "@/types/reduxStates";
 
 const initialState: AppState = {
+  // user: null,
+  token: null,
   isAdmin: false,
-  token: "",
+  sessionExpiresAt: null,
   merch: [],
   cart: [],
   cartItemIds: [],
@@ -18,8 +20,22 @@ const appSlice = createSlice({
     setMerch: (state, action: PayloadAction<MerchProps[]>) => {
       state.merch = action.payload;
     },
+    // updateUser: (state, action) => {
+    //   state.user = action.payload;
+    // },
+    refreshToken: (state, action) => {
+      const newToken = action.payload;
+
+      state.token = newToken;
+      state.sessionExpiresAt = Date.now() + 24 * 60 * 60 * 1000;
+    },
     updateAdmin: (state, action: PayloadAction<boolean>) => {
       state.isAdmin = action.payload;
+    },
+    logout: (state, action) => {
+      state.token = null;
+      state.isAdmin = false;
+      state.sessionExpiresAt = null;
     },
     addToCart: (
       state,
@@ -93,6 +109,8 @@ export const {
   updateAdmin,
   addToCart,
   removeFromCart,
+  refreshToken,
+  logout,
   clearItem,
   clearCart,
 } = appSlice.actions;

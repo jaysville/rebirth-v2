@@ -10,6 +10,7 @@ import Footer from "@/components/footer";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Pacifico, Open_Sans } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,6 +67,7 @@ export default function RootLayout({
       >
         <ProviderWrapper>
           <NavBar />
+          <Toaster position="bottom-right" />
           <div style={{ marginTop: "80px", position: "relative" }}>
             {children}
           </div>

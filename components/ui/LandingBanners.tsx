@@ -1,12 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import Banner from "@/public/assets/banner2.jpg";
 
-import { MainBtn, ShopNowBtn } from "../ui/Buttons";
-import { useSelector } from "react-redux";
-import VideoBox from "./VideoBox";
-import Image from "next/image";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 
