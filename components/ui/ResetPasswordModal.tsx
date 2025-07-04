@@ -1,13 +1,10 @@
 "use client";
-
 import { Modal, Box } from "@mui/material";
 import { AltBtn } from "./Buttons";
 import styled from "styled-components";
-import { FormEvent, useState } from "react";
-
-import serverUrl from "@/utils/server";
+import { FormEvent, useEffect, useState } from "react";
 import { notifyError, notifySuccess } from "@/lib";
-import { error } from "console";
+import useHttp from "@/lib/hooks/useHttp";
 
 interface Props {
   isOpen: boolean;
@@ -16,7 +13,6 @@ interface Props {
 
 const ResetPasswordModal: React.FC<Props> = ({ isOpen, handleClose }) => {
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   function validateEmail(email: string) {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -26,34 +22,27 @@ const ResetPasswordModal: React.FC<Props> = ({ isOpen, handleClose }) => {
   const handleSubmit = async (e: FormEvent) => {
     e.stopPropagation();
     e.preventDefault();
-
     const isValid = validateEmail(email);
     if (!isValid) {
       notifyError("Enter a valid email address");
       return;
     }
 
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${serverUrl}/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        notifySuccess(data.message);
-        handleClose();
-      } else {
-        throw new Error("Something Went Wrong");
-      }
-    } catch (e: any) {
-      notifyError(e.message);
-    } finally {
-      setIsLoading(false);
-    }
+    fetchData();
   };
+
+  const { fetchData, data, isSuccess, loading } = useHttp(
+    "forgot-password",
+    "POST",
+    { email }
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      notifySuccess(data.message);
+      handleClose();
+    }
+  }, [isSuccess]);
 
   return (
     <Modal
@@ -83,8 +72,8 @@ const ResetPasswordModal: React.FC<Props> = ({ isOpen, handleClose }) => {
             }}
           />
           <div>
-            <AltBtn onClick={handleSubmit} disabled={isLoading}>
-              {isLoading ? "Processing..." : "Submit"}
+            <AltBtn onClick={handleSubmit} disabled={loading}>
+              {loading ? "Processing..." : "Submit"}
             </AltBtn>
           </div>
         </Form>

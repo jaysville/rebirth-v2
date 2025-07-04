@@ -1,73 +1,80 @@
 "use client";
 
 import styled from "styled-components";
-import { Form } from "@/components/ui/styled-components";
-import { AltBtn, MainBtn } from "../../components/ui/Buttons";
+import { Form, ErrorText } from "@/components/ui/styled-components";
+import { MainBtn } from "../../components/ui/Buttons";
 import { useFormik } from "formik";
-import { loginSchema } from "@/lib/schemas";
+import { registerSchema } from "@/lib/schemas";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-
+import { notification } from "antd";
 import { refreshToken, updateAdmin } from "@/redux/slices/appSlice";
-import { ErrorText } from "@/components/ui/styled-components";
-import ResetPasswordModal from "@/components/ui/ResetPasswordModal";
-
-import { notifySuccess } from "@/lib";
 import useHttp from "@/lib/hooks/useHttp";
+import { notifySuccess } from "@/lib";
 
-const Login: React.FC = () => {
-  const dispatch = useDispatch();
+const Register = () => {
   const router = useRouter();
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
   const { values, errors, handleChange, handleBlur, handleSubmit, touched } =
     useFormik({
       initialValues: {
+        fullName: "",
         email: "",
         password: "",
+        confirmPassword: "",
       },
-      validationSchema: loginSchema,
+      validationSchema: registerSchema,
       onSubmit: () => {
-        login();
+        registerUser();
       },
     });
 
   const {
-    fetchData: login,
+    fetchData: registerUser,
     data,
     isSuccess,
     loading,
-  } = useHttp("auth/login", "POST", {
+  } = useHttp("auth/register", "POST", {
     email: values.email,
+    fullName: values.fullName,
     password: values.password,
+    confirmPassword: values.confirmPassword,
   });
 
   useEffect(() => {
     if (isSuccess) {
-      dispatch(updateAdmin(data.user.isAdmin));
+      //   dispatch(updateUser(data.user));
       dispatch(refreshToken(data.token));
-      notifySuccess("Welcome Back");
-      setTimeout(() => {
-        router.push("/");
-      }, 200);
+      dispatch(updateAdmin(data.user.isAdmin));
+      notifySuccess("Welcome to Rebirth Island");
+      router.push("/");
     }
-  }, [isSuccess]);
+  }, [data, isSuccess, loading, dispatch]);
 
   return (
     <Style>
-      <h3>Login</h3>
+      <h3>Register</h3>
       <Form onSubmit={handleSubmit}>
+        <div>
+          <label>Full Name</label>
+          <input
+            name="fullName"
+            value={values.fullName}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {touched.fullName && errors.fullName && (
+            <ErrorText>{errors.fullName}</ErrorText>
+          )}
+        </div>
+
         <div>
           <label>Email</label>
           <input
             type="email"
             name="email"
-            autoComplete="email"
             value={values.email}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -77,37 +84,36 @@ const Login: React.FC = () => {
           )}
         </div>
 
-        <div className="password-container">
-          <ResetPasswordModal isOpen={open} handleClose={handleClose} />
+        <div>
           <label>Password</label>
           <input
             type="password"
             name="password"
-            autoComplete="current-password"
             value={values.password}
             onChange={handleChange}
             onBlur={handleBlur}
           />
-          <p onClick={handleOpen}>Forgot your Password?</p>
           {touched.password && errors.password && (
             <ErrorText>{errors.password}</ErrorText>
           )}
         </div>
+        <div>
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={values.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          {touched.confirmPassword && errors.confirmPassword && (
+            <ErrorText>{errors.confirmPassword}</ErrorText>
+          )}
+        </div>
 
         <MainBtn type="submit" disabled={loading}>
-          {loading ? <small>Authorizing...</small> : "Login"}{" "}
+          {loading ? "Loading..." : "Register"}
         </MainBtn>
-        <hr />
-
-        <AltBtn
-          type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            router.push("/register");
-          }}
-        >
-          Create Account
-        </AltBtn>
       </Form>
     </Style>
   );
@@ -118,33 +124,19 @@ const Style = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px;
-  margin-bottom: 150px;
-
   form {
     width: 400px;
     @media (max-width: 460px) {
       width: 100%;
     }
   }
-
   h3 {
     text-align: center;
   }
 
   div {
-    margin-bottom: 20px;
-  }
-
-  .password-container {
-    position: relative;
-    p {
-      position: absolute;
-      text-decoration: underline;
-      cursor: pointer;
-      top: -10px;
-      right: 0;
-    }
+    margin-bottom: 15px;
   }
 `;
 
-export default Login;
+export default Register;
