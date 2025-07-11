@@ -6,11 +6,11 @@ import Icon, {
   ShoppingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import { useSelector } from "react-redux";
 import { Badge } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Logout, ShoppingBag } from "@mui/icons-material";
+
 import Link from "next/link";
 import SideNav from "./Sidenav";
 import { RootState } from "@/redux/store";
@@ -25,6 +25,9 @@ const NavBar: React.FC = () => {
   const totalQuantity = useSelector(
     (state: RootState) => state.app.totalQuantity
   );
+
+  const isAdmin = useSelector((state: RootState) => state.app.isAdmin);
+  const token = useSelector((state: RootState) => state.app.token);
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -50,83 +53,6 @@ const NavBar: React.FC = () => {
   return (
     <>
       <Style>
-        {/* {mobileview && !onCheckoutPage && <Hamburger onClick={opensidenav} />}
-      <a href="/">
-        <Logo
-          src={`${process.env.PUBLIC_URL}/images/Logo.png`}
-          alt="logo"
-          mobileview={mobileview}
-          isAdmin={isAdmin}
-        />
-      </a>
-      {!isAdmin && !mobileview && (
-        <CollectionsList>
-          {!onCheckoutPage &&
-            collectionLinks.map(({ title, href, items }, i) => {
-              return (
-                <li key={i}>
-                  {items ? (
-                    <Dropdown
-                      menu={{
-                        items,
-                      }}
-                    >
-                      <a>
-                        <Space>
-                          {title} <DownOutlined />
-                        </Space>
-                      </a>
-                    </Dropdown>
-                  ) : (
-                    <a href={href}> {title}</a>
-                  )}
-                </li>
-              );
-            })}
-        </CollectionsList>
-      )}
-      {isAdmin && !mobileview && (
-        <AdminContainer
-          onClick={() => {
-            navigate("/add-merch");
-          }}
-        >
-          <span>Add Merch</span>
-        </AdminContainer>
-      )}
-      {isAdmin && !mobileview && (
-        <AdminContainer
-          onClick={() => {
-            navigate("/orders");
-          }}
-        >
-          <span>Orders</span>
-        </AdminContainer>
-      )}
-      <OtherLists mobileview={mobileview}>
-        {otherLinks.map(({ title, icon, onClick }, i) => {
-          const indicesToExclude = [0, 1];
-
-          if ((mobileview || onCheckoutPage) && indicesToExclude.includes(i)) {
-            return null;
-          }
-          if (!token && i === 1) {
-            return null;
-          }
-
-          if (isAdmin & (i === 2 || i === 0)) {
-            return null;
-          }
-          return (
-            <li key={i} onClick={onClick}>
-              <div>
-                <span className="title">{title}</span>
-              </div>
-              <i>{icon}</i>
-            </li>
-          );
-        })}
-      </OtherLists> */}
         {mobileView && (
           <MenuOutlined
             onClick={() => {
@@ -138,7 +64,25 @@ const NavBar: React.FC = () => {
           <h1>Rebirth Island</h1>
         </a>
 
-        {!mobileView && (
+        {isAdmin && !mobileView && (
+          <AdminContainer
+            onClick={() => {
+              router.push("/admin/shop");
+            }}
+          >
+            <span>Shop</span>
+          </AdminContainer>
+        )}
+        {isAdmin && !mobileView && (
+          <AdminContainer
+            onClick={() => {
+              router.push("/admin/orders");
+            }}
+          >
+            <span>Orders</span>
+          </AdminContainer>
+        )}
+        {!mobileView && !isAdmin && (
           <CollectionsList>
             {collectionLinks.map(({ title, href }, i) => {
               return (
@@ -151,7 +95,6 @@ const NavBar: React.FC = () => {
         )}
         <div className="icons">
           <Badge
-            // badgeContent={onCheckoutPage ? 0 : totalQuantity}
             badgeContent={totalQuantity}
             sx={{
               "& .MuiBadge-badge": {
@@ -170,7 +113,7 @@ const NavBar: React.FC = () => {
 
           <UserOutlined
             onClick={() => {
-              router.push("/login");
+              router.push(token ? "/account" : "/login");
             }}
           />
         </div>
@@ -223,11 +166,6 @@ const Style = styled.nav`
   }
 `;
 
-const Logo = styled.img`
-  width: 100px;
-  transform: scale(1.5) translateX(20px);
-  cursor: pointer;
-`;
 const AdminContainer = styled.div`
   font-weight: 500;
   /* transform: translateY(9px); */
@@ -258,19 +196,6 @@ const OtherLists = styled.ul`
       transform: translateY(15px);
     }
   }
-`;
-
-const AccountIcon = styled(PermIdentityIcon)`
-  transform: translateY(3px);
-`;
-
-const Hamburger = styled(MenuIcon)`
-  transform: scale(1.5) translateY(38px) translateX(10px);
-  cursor: pointer;
-`;
-
-const LogoutIcon = styled(Logout)`
-  transform: scale(0.9) translateY(3px) translateX(2px);
 `;
 
 export const collectionLinks = [

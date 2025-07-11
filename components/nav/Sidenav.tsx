@@ -2,10 +2,8 @@ import { Drawer } from "@mui/material";
 import styled from "styled-components";
 import { CloseOutlined } from "@ant-design/icons";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import { Menu } from "antd";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useSelector } from "react-redux";
-import { Logout, PermIdentity } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/redux/store";
 
@@ -14,17 +12,11 @@ import { collectionLinks } from "./index";
 interface SideNavProps {
   opensidenav: boolean;
   closesidenav: () => void;
-  //   openlogoutmodal: () => void;
 }
 
-const SideNav: React.FC<SideNavProps> = ({
-  opensidenav,
-  closesidenav,
-  //   openlogoutmodal,
-}) => {
-  //   const totalQuantity = useSelector((state) => state.app.totalQuantity);
-  //   const token = useSelector((state) => state.app.token);
-  //   const isAdmin = useSelector((state) => state.app.isAdmin);
+const SideNav: React.FC<SideNavProps> = ({ opensidenav, closesidenav }) => {
+  const token = useSelector((state: RootState) => state.app.token);
+  const isAdmin = useSelector((state: RootState) => state.app.isAdmin);
 
   const router = useRouter();
 
@@ -47,68 +39,37 @@ const SideNav: React.FC<SideNavProps> = ({
           </CartLink>
         </a>
 
-        <ul>
-          {collectionLinks.map(({ title, href }, i) => {
-            return (
-              <a href={href} key={i}>
-                <li className="collections-link">{title} </li>
-              </a>
-            );
-          })}
-        </ul>
-        {/* )}
-        {token ? (
-          <>
-            {!isAdmin ? (
-              <LinkContainer
-                onClick={() => {
-                  navigate("/account");
-                  closesidenav();
-                }}
-              >
-                <span>Account</span> <PermIdentity />
-              </LinkContainer>
-            ) : (
-              <>
-                <LinkContainer
-                  onClick={() => {
-                    navigate("/add-merch");
-                    closesidenav();
-                  }}
-                >
-                  <span>Add Merch</span>
-                </LinkContainer>
-                <LinkContainer
-                  onClick={() => {
-                    navigate("/orders");
-                    closesidenav();
-                  }}
-                >
-                  <span>Orders</span>
-                </LinkContainer>
-              </>
-            )}
+        {!isAdmin && (
+          <ul>
+            {collectionLinks.map(({ title, href }, i) => {
+              return (
+                <a href={href} key={i}>
+                  <li className="collections-link">{title} </li>
+                </a>
+              );
+            })}
+          </ul>
+        )}
+        {isAdmin && (
+          <ul>
+            {AdminLinks.map(({ title, href }, i) => {
+              return (
+                <a href={href} key={i}>
+                  <li className="collections-link">{title} </li>
+                </a>
+              );
+            })}
+          </ul>
+        )}
 
-            <LinkContainer
-              onClick={() => {
-                closesidenav();
-                openlogoutmodal();
-              }}
-            >
-              <span>Logout</span> <Logout />
-            </LinkContainer>
-          </>
-        ) : (
-        
-        )} */}
         <AuthLink
           onClick={() => {
             closesidenav();
-            router.push("/login");
+            router.push(token ? "/account" : "/login");
           }}
         >
           <PersonOutlineOutlinedIcon />
-          <span>Login/Create Account</span>
+          <span>{token ? "Account" : "Login/Create Account"}</span>
         </AuthLink>
       </Container>
     </Drawer>
@@ -136,18 +97,7 @@ const Container = styled.div`
 const Close = styled(CloseOutlined)`
   cursor: pointer;
 `;
-const LinkContainer = styled.div`
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  padding: 10px 0;
-  padding-left: 30px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 400;
-  svg {
-    transform: scale(0.8) translateY(7px);
-  }
-`;
+
 const CartLink = styled.div`
   border: 1px solid grey;
   padding: 10px 30px;
@@ -172,3 +122,8 @@ const AuthLink = styled.div`
     transform: scale(0.8) translateY(8px);
   }
 `;
+
+const AdminLinks = [
+  { title: "Shop", href: "/admin/shop" },
+  { title: "Orders", href: "/admin/orders" },
+];

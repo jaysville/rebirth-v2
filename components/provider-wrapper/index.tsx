@@ -6,6 +6,8 @@ import { store, persistor } from "../../redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import GlobalStyle from "../ui/GlobalStyleWrapper";
 
+import SessionWrapper from "../ui/SessionWrapper";
+
 interface ReduxProviderProps {
   children: React.ReactNode;
 }
@@ -16,7 +18,7 @@ const ProviderWrapper: React.FC<ReduxProviderProps> = ({ children }) => {
       <GlobalStyle />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          {children}
+          <SessionWrapper> {children}</SessionWrapper>
         </PersistGate>
       </Provider>
     </>

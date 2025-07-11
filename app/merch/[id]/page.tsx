@@ -8,7 +8,7 @@ interface Props {
 const MerchDetails: React.FC<Props> = async ({ params }) => {
   const { id } = await params;
   const res = await fetch(`${serverUrl}/merch/${id}`, {
-    next: { revalidate: 60 },
+    cache: "no-store",
     headers: {
       Origin: process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
     },

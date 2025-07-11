@@ -12,16 +12,18 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { MainBtn } from "./Buttons";
+import { AltBtn, MainBtn } from "./Buttons";
 import { addToCart } from "@/redux/slices/appSlice";
 import Modal from "@mui/material/Modal";
 import AddedToCartModal from "./AddedToCartModal";
+import { useRouter } from "next/navigation";
 
 interface Props {
   merch: MerchProps;
 }
 
 const SingleMerchPage: React.FC<Props> = ({ merch }) => {
+  console.log(merch);
   const [showCornfirmationModal, setshowConformationModal] = useState(false);
 
   const [size, setSize] = useState("");
@@ -31,7 +33,7 @@ const SingleMerchPage: React.FC<Props> = ({ merch }) => {
 
   const isAdmin = useSelector((state: RootState) => state.app.isAdmin);
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const handleChange = (event: SelectChangeEvent) => {
     setSize(event.target.value);
   };
@@ -112,7 +114,7 @@ const SingleMerchPage: React.FC<Props> = ({ merch }) => {
           <div>
             <h3>{merch.name}</h3>
             <p>₦{merch.price}</p>
-            {merch.sizes && !isAdmin && (
+            {merch.sizes && !merch.soldout && (
               <SizeControl>
                 <label>Size</label>
                 <FormControl sx={{ width: 220, marginLeft: "50px" }}>
@@ -133,7 +135,8 @@ const SingleMerchPage: React.FC<Props> = ({ merch }) => {
                 </FormControl>
               </SizeControl>
             )}
-            {!isAdmin && (
+
+            {!merch.soldout && (
               <div className="qty-ctrl-container">
                 <label>Quantity</label>
                 <QuantityControl>
@@ -149,32 +152,21 @@ const SingleMerchPage: React.FC<Props> = ({ merch }) => {
             )}
           </div>
           <br />
-          <MainBtn onClick={handleClick}>Add to Cart</MainBtn>
-          {/* <MainBtn
-            onClick={
-              !isAdmin
-                ? handleClick
-                : () => {
-                    navigate(`/edit-merch/${merch._id}`);
-                  }
-            }
-            type="submit"
-          >
-            {isAdmin
-              ? "Edit Merch"
-              : // : inCart
-                // ? "Remove from cart"
-                "Add to cart"}
-          </MainBtn> */}
-          {/* {isAdmin && (
+          {merch.soldout && (
+            <SoldoutTag>Merch is out of stock. Check back soon.</SoldoutTag>
+          )}
+          {isAdmin && (
             <AltBtn
               onClick={() => {
-                setOpenDeleteModal(true);
+                router.push(`/admin/shop/edit-merch/${merch._id}`);
               }}
             >
-              {deleteLoading ? "Deleting.." : "Delete Merch"}
+              Edit
             </AltBtn>
-          )} */}
+          )}
+          {!merch.soldout && (
+            <MainBtn onClick={handleClick}>Add to Cart</MainBtn>
+          )}
         </Grid>
       </Grid>
     </Container>
@@ -266,6 +258,11 @@ const QuantityControl = styled.div`
     margin: 0 10px;
     cursor: pointer;
   }
+`;
+
+const SoldoutTag = styled.p`
+  color: #b6193f;
+  font-weight: bold;
 `;
 
 export default SingleMerchPage;

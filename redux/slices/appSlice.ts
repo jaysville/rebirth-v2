@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { MerchProps } from "@/types/components";
-import { AppState } from "@/types/reduxStates";
+import { AppState, UserProps } from "@/types/reduxStates";
 
 const initialState: AppState = {
-  // user: null,
+  user: null,
   token: null,
   isAdmin: false,
   sessionExpiresAt: null,
@@ -20,9 +20,9 @@ const appSlice = createSlice({
     setMerch: (state, action: PayloadAction<MerchProps[]>) => {
       state.merch = action.payload;
     },
-    // updateUser: (state, action) => {
-    //   state.user = action.payload;
-    // },
+    updateUser: (state, action: PayloadAction<UserProps>) => {
+      state.user = action.payload;
+    },
     refreshToken: (state, action) => {
       const newToken = action.payload;
 
@@ -32,7 +32,7 @@ const appSlice = createSlice({
     updateAdmin: (state, action: PayloadAction<boolean>) => {
       state.isAdmin = action.payload;
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.token = null;
       state.isAdmin = false;
       state.sessionExpiresAt = null;
@@ -107,6 +107,7 @@ const appSlice = createSlice({
 export const {
   setMerch,
   updateAdmin,
+  updateUser,
   addToCart,
   removeFromCart,
   refreshToken,

@@ -70,6 +70,7 @@ export const Form = styled.form`
     width: 100%;
     height: 40px;
     /* border: 1px solid; */
+    background-color: white;
     outline: none;
     padding: 5px;
     box-sizing: border-box;

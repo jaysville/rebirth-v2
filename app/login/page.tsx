@@ -2,28 +2,38 @@
 
 import styled from "styled-components";
 import { Form } from "@/components/ui/styled-components";
-import { AltBtn, MainBtn } from "../../components/ui/Buttons";
+import { AltBtn, MainBtn } from "@/components/ui/Buttons";
 import { useFormik } from "formik";
 import { loginSchema } from "@/lib/schemas";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
-import { refreshToken, updateAdmin } from "@/redux/slices/appSlice";
+import { refreshToken, updateAdmin, updateUser } from "@/redux/slices/appSlice";
 import { ErrorText } from "@/components/ui/styled-components";
 import ResetPasswordModal from "@/components/ui/ResetPasswordModal";
 
 import { notifySuccess } from "@/lib";
 import useHttp from "@/lib/hooks/useHttp";
+import { RootState } from "@/redux/store";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const token = useSelector((state: RootState) => state.app.token);
 
+  const [authChecked, setAuthChecked] = useState(false);
   const [open, setOpen] = useState(false);
-
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (token) {
+      router.replace("/");
+    } else {
+      setAuthChecked(true);
+    }
+  }, [token]);
 
   const { values, errors, handleChange, handleBlur, handleSubmit, touched } =
     useFormik({
@@ -32,9 +42,7 @@ const Login: React.FC = () => {
         password: "",
       },
       validationSchema: loginSchema,
-      onSubmit: () => {
-        login();
-      },
+      onSubmit: () => login(),
     });
 
   const {
@@ -50,13 +58,16 @@ const Login: React.FC = () => {
   useEffect(() => {
     if (isSuccess) {
       dispatch(updateAdmin(data.user.isAdmin));
+      dispatch(updateUser(data.user));
       dispatch(refreshToken(data.token));
       notifySuccess("Welcome Back");
       setTimeout(() => {
         router.push("/");
-      }, 200);
+      }, 100);
     }
   }, [isSuccess]);
+
+  if (!authChecked) return null;
 
   return (
     <Style>
@@ -95,10 +106,9 @@ const Login: React.FC = () => {
         </div>
 
         <MainBtn type="submit" disabled={loading}>
-          {loading ? <small>Authorizing...</small> : "Login"}{" "}
+          {loading ? <small>Authorizing...</small> : "Login"}
         </MainBtn>
         <hr />
-
         <AltBtn
           type="button"
           onClick={(e) => {
@@ -112,6 +122,8 @@ const Login: React.FC = () => {
     </Style>
   );
 };
+
+export default Login;
 
 const Style = styled.div`
   display: flex;
@@ -146,5 +158,3 @@ const Style = styled.div`
     }
   }
 `;
-
-export default Login;

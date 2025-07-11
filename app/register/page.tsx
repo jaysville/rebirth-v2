@@ -2,20 +2,31 @@
 
 import styled from "styled-components";
 import { Form, ErrorText } from "@/components/ui/styled-components";
-import { MainBtn } from "../../components/ui/Buttons";
+import { MainBtn } from "@/components/ui/Buttons";
 import { useFormik } from "formik";
 import { registerSchema } from "@/lib/schemas";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { notification } from "antd";
-import { refreshToken, updateAdmin } from "@/redux/slices/appSlice";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { refreshToken, updateAdmin, updateUser } from "@/redux/slices/appSlice";
 import useHttp from "@/lib/hooks/useHttp";
 import { notifySuccess } from "@/lib";
+import { RootState } from "@/redux/store";
 
 const Register = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const token = useSelector((state: RootState) => state.app.token);
+
+  const [authChecked, setAuthChecked] = useState(false);
+
+  useEffect(() => {
+    if (token) {
+      router.replace("/");
+    } else {
+      setAuthChecked(true);
+    }
+  }, [token]);
 
   const { values, errors, handleChange, handleBlur, handleSubmit, touched } =
     useFormik({
@@ -26,9 +37,7 @@ const Register = () => {
         confirmPassword: "",
       },
       validationSchema: registerSchema,
-      onSubmit: () => {
-        registerUser();
-      },
+      onSubmit: () => registerUser(),
     });
 
   const {
@@ -45,13 +54,15 @@ const Register = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      //   dispatch(updateUser(data.user));
+      dispatch(updateUser(data.user));
       dispatch(refreshToken(data.token));
       dispatch(updateAdmin(data.user.isAdmin));
       notifySuccess("Welcome to Rebirth Island");
       router.push("/");
     }
-  }, [data, isSuccess, loading, dispatch]);
+  }, [isSuccess]);
+
+  if (!authChecked) return null;
 
   return (
     <Style>
@@ -124,12 +135,14 @@ const Style = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 10px;
+
   form {
     width: 400px;
     @media (max-width: 460px) {
       width: 100%;
     }
   }
+
   h3 {
     text-align: center;
   }

@@ -15,12 +15,13 @@ import { Modal } from "antd";
 import { clearCart } from "@/redux/slices/appSlice";
 import { useRouter } from "next/navigation";
 import { orderSchema } from "@/lib/schemas";
-import serverUrl from "@/utils/server";
+
 import { CartItemProps } from "@/types/reduxStates";
 import { Form } from "../../components/ui/styled-components";
 import { notifySuccess, notifyError } from "@/lib";
+import useHttp from "@/lib/hooks/useHttp";
 
-const Checkout: React.FC = () => {
+const Checkout = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const cart = useSelector((state: any) => state.app.cart);
@@ -29,8 +30,8 @@ const Checkout: React.FC = () => {
   const [showCartSummary, setShowCartSummary] = useState(false);
   const [mobileView, setMobileView] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [isPlacing, setIsPlacing] = useState(false);
-  const [isVerifying, setIsVerifying] = useState(false);
+
+  const [transactionInitialized, setTransactionInitialized] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -75,11 +76,66 @@ const Checkout: React.FC = () => {
       validationSchema: orderSchema,
       onSubmit: () => setIsModalOpen(true),
     });
-  const handleOk = async () => {
-    setIsModalOpen(false);
-    setIsVerifying(true);
+  //initialize transaction
 
-    try {
+  const {
+    isSuccess: transactionInitializationSuccess,
+    data: initilizationData,
+    fetchData: initializeTransaction,
+    loading: initializationLoading,
+  } = useHttp("transaction/initialize", "POST", {
+    key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
+    email: values.email,
+    amount: netPrice * 100,
+  });
+
+  //verify transaction
+
+  const {
+    isSuccess: verificationSuccess,
+    loading: verificationLoading,
+    fetchData: verifyTransaction,
+  } = useHttp(
+    `transaction/verify/${initilizationData?.data?.reference}`,
+    "Post"
+  );
+
+  //place order
+
+  const {
+    fetchData: placeOrder,
+    isSuccess: orderSuccess,
+    loading: orderLoading,
+  } = useHttp("order", "POST", {
+    email: values.email,
+    phone: values.phone,
+    address: values.address,
+    firstName: values.firstName,
+    lastName: values.lastName,
+    landmark: values.landmark,
+    city: values.city,
+    state: values.state,
+    products: cart.map(
+      ({ _id, name, price, images, size, quantity }: CartItemProps) => ({
+        productId: _id,
+        image: images[0],
+        price,
+        name,
+        size,
+        quantity,
+      })
+    ),
+    totalAmount: totalProductPrice,
+  });
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+    initializeTransaction();
+  };
+
+  useEffect(() => {
+    if (!initializationLoading && transactionInitializationSuccess) {
+      //verify transaction  after initialization
       const popup = new PaystackPop();
       popup.newTransaction({
         key: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY!,
@@ -88,84 +144,39 @@ const Checkout: React.FC = () => {
         firstName: values.firstName,
         lastName: values.lastName,
         phone: values.phone,
-        onSuccess: async (transaction: any) => {
-          try {
-            const verificationResponse = await fetch(
-              `${serverUrl}/transaction/verify/${transaction.reference}`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-              }
-            );
-
-            if (!verificationResponse.ok) {
-              throw new Error("Transaction verification failed.");
-            }
-            setIsVerifying(false);
-            setIsPlacing(true);
-
-            const body = {
-              email: values.email,
-              phone: values.phone,
-              address: values.address,
-              firstName: values.firstName,
-              lastName: values.lastName,
-              landmark: values.landmark,
-              city: values.city,
-              state: values.state,
-              products: cart.map(
-                ({
-                  _id,
-                  name,
-                  price,
-                  images,
-                  size,
-                  quantity,
-                }: CartItemProps) => ({
-                  productId: _id,
-                  image: images[0],
-                  price,
-                  name,
-                  size,
-                  quantity,
-                })
-              ),
-              totalAmount: totalProductPrice,
-            };
-
-            const orderResponse = await fetch(`${serverUrl}/order`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(body),
-            });
-
-            if (!orderResponse.ok) {
-              throw new Error("Order creation failed.");
-            }
-            notifySuccess(
-              "Thanks for shopping with Rebirth! You will receive an email containing your order details shortly."
-            );
-            setIsPlacing(false);
-
-            dispatch(clearCart());
-            setTimeout(() => {
-              router.push("/");
-            }, 200); //
-          } catch (err: any) {
-            throw new Error(err.message || "Something went wrong!");
-          }
+        onSuccess: async () => {
+          setTransactionInitialized(true);
         },
         onCancel: () => {
-          notifyError("Payment was canceled");
+          notifyError("Payment cancelled.");
         },
       });
-    } catch (error: any) {
-      notifyError(error.message || "Something went wrong");
-    } finally {
-      setIsPlacing(false);
-      setIsVerifying(false);
     }
-  };
+  }, [initializationLoading, transactionInitializationSuccess]);
+
+  useEffect(() => {
+    if (transactionInitialized) {
+      verifyTransaction();
+    }
+  }, [transactionInitialized]);
+
+  useEffect(() => {
+    if (!verificationLoading && verificationSuccess) {
+      placeOrder();
+    }
+  }, [verificationSuccess, verificationLoading]);
+
+  useEffect(() => {
+    if (!orderLoading && orderSuccess) {
+      dispatch(clearCart());
+      setTimeout(() => {
+        router.push("/");
+      }, 200);
+      notifySuccess(
+        "Thanks for shopping with Rebirth! You will receive an email containing your order details shortly."
+      );
+    }
+  }, [orderLoading, orderSuccess]);
 
   return (
     <Style mobileview={mobileView}>
@@ -333,9 +344,9 @@ const Checkout: React.FC = () => {
           </LocationContainer>
 
           <MainBtn type="submit">
-            {isVerifying
+            {verificationLoading
               ? "Verifying payment..."
-              : isPlacing
+              : orderLoading
               ? "Placing Order..."
               : "Pay Now"}
           </MainBtn>

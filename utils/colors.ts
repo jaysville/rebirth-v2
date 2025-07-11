@@ -17,3 +17,18 @@ export const darkMode: Colors = {
   headers: "",
   accent: "",
 };
+
+export const getStatusColor = (status: string) => {
+  switch (status) {
+    case "Pending":
+      return "Orange";
+    case "Received":
+      return "blue";
+    case "Shipped":
+      return "teal";
+    case "Delivered":
+      return "green";
+    default:
+      return "black"; // default color if status doesn't match any case
+  }
+};
