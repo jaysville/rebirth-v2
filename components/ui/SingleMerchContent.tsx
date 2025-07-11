@@ -23,7 +23,6 @@ interface Props {
 }
 
 const SingleMerchPage: React.FC<Props> = ({ merch }) => {
-  console.log(merch);
   const [showCornfirmationModal, setshowConformationModal] = useState(false);
 
   const [size, setSize] = useState("");

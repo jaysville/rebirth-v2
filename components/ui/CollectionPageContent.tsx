@@ -13,7 +13,10 @@ interface Props {
 const CollectionPageContent: React.FC<Props> = ({ merch, category }) => {
   return (
     <Style>
-      <h3>{category.toUpperCase()}</h3>
+      <h3>
+        {category.slice(0, 1).toUpperCase()}
+        {category.slice(1)}
+      </h3>
       <ProductsContainer>
         {merch.map((merch, i) => {
           return (

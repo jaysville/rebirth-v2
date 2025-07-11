@@ -6,8 +6,6 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 
 const Landing = () => {
-  //   const isAdmin = useSelector((state) => state.app.isAdmin);
-
   const router = useRouter();
 
   return (
@@ -18,14 +16,14 @@ const Landing = () => {
             router.push("/collections/male");
           }}
         >
-          Shop Men <ArrowRightOutlined />
+          Shop Male <ArrowRightOutlined />
         </button>
         <button
           onClick={() => {
             router.push("/collections/female");
           }}
         >
-          Shop Women <ArrowRightOutlined />
+          Shop Female <ArrowRightOutlined />
         </button>
         <button
           onClick={() => {
