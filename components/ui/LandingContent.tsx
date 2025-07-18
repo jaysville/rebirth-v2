@@ -11,13 +11,14 @@ import { useDispatch } from "react-redux";
 import { setMerch } from "@/redux/slices/appSlice";
 import { useEffect } from "react";
 import { AppDispatch } from "@/redux/store";
-
+import { useRouter } from "next/navigation";
 interface Props {
   merch: MerchProps[];
 }
 
 const LandingContent: React.FC<Props> = ({ merch }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
   useEffect(() => {
     if (merch?.length) {
@@ -47,7 +48,13 @@ const LandingContent: React.FC<Props> = ({ merch }) => {
             resilience, and bold simplicity. This isn’t just clothing — it’s a
             symbol of your evolution.
           </p>
-          <MainBtn>Learn More</MainBtn>
+          <MainBtn
+            onClick={() => {
+              router.push("/about-us");
+            }}
+          >
+            Learn More
+          </MainBtn>
         </Grid>
       </Grid>
 
