@@ -11,7 +11,7 @@ export const Trending_Merch: TrendingMerchProps[] = [
     name: "Rebirth island Tee",
     thumbmail: "https://i.postimg.cc/pd7Ghms0/rebirth1.png",
     description:
-      "Beyond the veil of reality, light illuminates te path. The boundaries of space and time ends, and the inifinite beauty of the universe unfolds.",
+      "Beyond the veil of reality, light illuminates the path. The boundaries of space and time ends, and the inifinite beauty of the universe unfolds.",
   },
   {
     _id: "68d50472daceb0c476372ed1",
