@@ -24,7 +24,7 @@ const Landingmerch: React.FC = () => {
               order={{ xs: 2, md: isImageRight ? 1 : 2 }}
               sx={{ padding: "20px" }}
             >
-              <Tag>Popular</Tag>
+              <Tag className="tag">Hot</Tag>
               <h3>{merch.name}</h3>
               <p className="description">{merch.description}</p>
               <Link href={`/merch/${merch._id}`}>

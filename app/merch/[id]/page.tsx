@@ -62,7 +62,9 @@ This is not just merch — it’s movement. A visual language for the awakened. 
         index: true,
         follow: true,
       },
-      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
+      metadataBase: new URL(
+        process.env.NEXT_PUBLIC_SITE_URL! || "http://localhost:3000"
+      ),
     };
   } catch (error) {
     console.error("Metadata generation error:", error);

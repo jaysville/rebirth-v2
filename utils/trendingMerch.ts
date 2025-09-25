@@ -7,24 +7,23 @@ interface TrendingMerchProps {
 
 export const Trending_Merch: TrendingMerchProps[] = [
   {
-    _id: "67ba009e4283a7aeef31b793",
-    name: "Palm Paradise",
-    thumbmail: "https://i.postimg.cc/TwBwfFHs/palm-paradise.jpg",
+    _id: "68d4fe5edaceb0c476372ecd",
+    name: "Rebirth island Tee",
+    thumbmail: "https://i.postimg.cc/pd7Ghms0/rebirth1.png",
     description:
-      "Laid-back island vibes meet urban minimalism. Made for warm days and bold energy.",
+      "Beyond the veil of reality, light illuminates te path. The boundaries of space and time ends, and the inifinite beauty of the universe unfolds.",
   },
   {
-    _id: "66e074bb338f417b6619836a",
-    name: "Rebirth Hot Summer",
-    thumbmail: "https://i.postimg.cc/SszwP8QF/product3.png",
+    _id: "68d50472daceb0c476372ed1",
+    name: "Rebirth Hat ",
+    thumbmail: "https://i.postimg.cc/HxRyfs5R/rebirth7.jpg",
     description:
       "Turn up the heat. Lightweight, fire-fit essentials built for confidence in motion.",
   },
   {
-    _id: "66e07404338f417b66198350",
-    name: "Rebirth Reborn Collection",
-    thumbmail: "https://i.postimg.cc/7Y4pBfpd/product7.png",
-    description:
-      "The symbol of your comeback. Clean lines, premium feel — built for those who rise again.",
+    _id: "68d502b9daceb0c476372ecf",
+    name: "Rebirth Girl Two Piece",
+    thumbmail: "https://i.postimg.cc/RFJHhFYL/rebirth2.png",
+    description: "High vibrational Streetwear, for High Vibrational Girlies.",
   },
 ];
